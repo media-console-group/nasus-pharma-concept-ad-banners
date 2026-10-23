@@ -1,0 +1,502 @@
+/* ── Brand tokens — the ONLY place colors are defined. Taken from the IR concept page's :root
+   (oklch converted to hex): --deep #0b1e49, --accent #d15c47, --accent-lt #ffbfb2 (the bright
+   accent the page uses for text on dark), --accent-2 #7698e7 (periwinkle). The rest derive from
+   them (color-mix: Chrome 111+ / Safari 16.2+). ── */
+:root {
+  --dark:      #0b1e49;
+  --dark-2:    color-mix(in srgb, var(--dark) 70%, black);
+  --navy:      #0b1e49;
+  --accent:    #d15c47;
+  --accent-d:  color-mix(in srgb, var(--accent) 82%, black);
+  --accent-lt: #ffbfb2;
+  --gold:      #7698e7;
+  --gold-lt:   #bcd1ff;
+  --white:     #ffffff;
+  --cta-ink:   var(--dark);   /* the IR page's .btn-primary-light: deep navy on the light coral fill */
+  --font-head: 'Fraunces', Georgia, serif;           /* the IR page's display face */
+  --font:      'Mulish', system-ui, sans-serif;      /* the IR page's body face */
+  --mono:      'DM Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --ease:      cubic-bezier(0.16,1,0.3,1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:300px; height:600px; overflow:hidden; background:var(--dark); }
+body { font-family:var(--font); -webkit-font-smoothing:antialiased; }
+a { text-decoration:none; color:inherit; }
+button { border:0; background:none; font:inherit; color:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.nw { white-space:nowrap; }   /* keeps hyphenated compounds (going-concern, unit-dose) on one line */
+
+/* ── Canvas ─────────────────────────────────────────────────────────
+   Fixed 300x600 stage. A crossfading slide stack sits at the bottom of
+   the z-order; persistent chrome (logo, nav, stats, CTA) is pinned on
+   top of it and never rotates. */
+#banner {
+  position:relative;
+  width:300px;
+  height:600px;
+  overflow:hidden;
+  cursor:pointer;
+  background:var(--dark);
+}
+
+/* ── Slide stack ────────────────────────────────────────────────── */
+#slides { position:absolute; inset:0; z-index:1; }
+
+.slide {
+  position:absolute;
+  inset:0;
+  opacity:0;
+  z-index:1;
+  pointer-events:none;
+  transition:opacity 0.9s ease;
+}
+.slide.active { opacity:1; z-index:2; pointer-events:auto; }
+
+.slide-bg {
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position:center 20%;
+  z-index:1;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+.slide-scrim-top, .slide-scrim-bottom {
+  position:absolute;
+  left:0; right:0;
+  z-index:2;
+  pointer-events:none;
+}
+.slide-scrim-top {
+  top:0; height:60px;   /* the art starts under the header and stripe, so the scrim only has to seat the logo */
+  background:linear-gradient(180deg, color-mix(in srgb, var(--dark-2) 90%, transparent) 0%, color-mix(in srgb, var(--dark-2) 0%, transparent) 100%);
+}
+.slide-scrim-bottom {
+  bottom:0; height:336px;
+  background:linear-gradient(0deg, var(--dark) 0%, color-mix(in srgb, var(--dark) 93%, transparent) 42%, color-mix(in srgb, var(--dark) 0%, transparent) 100%);
+}
+
+.slide-copy {
+  position:absolute;
+  inset:0;
+  z-index:3;
+  transform:translateY(12px);
+  transition:transform 0.9s var(--ease);
+}
+.slide.active .slide-copy { transform:translateY(0); }
+
+/* Floating mid-image stat chip (per slide) */
+.mid-chip {
+  position:absolute;
+  top:266px; left:18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 13px 9px 11px;
+  background:color-mix(in srgb, var(--dark) 58%, transparent);
+  border-left:3px solid var(--accent);
+  border-radius:0 3px 3px 0;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+}
+.chip-num {
+  font-family:var(--font-head);
+  font-weight:800;
+  font-size:19px;
+  color:var(--white);
+  white-space:nowrap;
+}
+.chip-num em { font-style:normal; color:var(--accent-lt); }
+.chip-label {
+  font-family:var(--font);
+  font-size:8.4px;
+  line-height:1.25;
+  font-weight:600;
+  color:rgba(255,255,255,0.84);
+}
+
+/* Rotating headline block, pinned above the fixed bottom bar */
+.copy-bottom {
+  position:absolute;
+  left:0; right:0;
+  bottom:138px;   /* the four-line disclosure makes the bottom block taller than the template's; the persistent stat row is gone */
+  padding:0 18px;
+}
+.kicker {
+  font-family:var(--mono);
+  font-weight:500;
+  font-size:8px;
+  letter-spacing:0.09em;
+  text-transform:uppercase;
+  color:var(--accent-lt);
+  margin-bottom:6px;
+}
+.copy-bottom h1 {
+  font-family:var(--font-head);
+  font-weight:800;
+  font-size:22px;
+  line-height:1.1;
+  letter-spacing:-0.015em;
+  color:var(--white);
+}
+.copy-bottom h1 em { font-style:italic; font-weight:500; color:var(--accent-lt); }
+.copy-bottom p {
+  margin-top:8px;
+  font-size:11.6px;
+  line-height:1.4;
+  color:rgba(255,255,255,0.86);
+  max-width:264px;
+}
+
+/* ── Persistent chrome (never rotates) ─────────────────────────── */
+#top-bar {
+  position:absolute;
+  top:0; left:0; right:0;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 18px 0;
+}
+/* the company's own lockup (white NA·U letters, the coloured powder S shapes kept), shipped at 2x */
+#logo { display:block; width:80px; height:45px; flex:none; }
+#eyebrow {
+  font-family:var(--mono);
+  font-weight:500;
+  font-size:7.6px;
+  line-height:1.55;
+  letter-spacing:0.1em;
+  text-align:right;
+  color:var(--accent-lt);
+}
+/* the two-tone diagonal the company uses under its hero (periwinkle over coral), as a rule under the header */
+#stripe { position:absolute; left:0; right:0; top:58px; height:20px; z-index:4; pointer-events:none; }
+#stripe::before, #stripe::after { content:''; position:absolute; inset:0; }
+#stripe::before { background:var(--gold);   clip-path:polygon(0 8px, 100% 0, 100% 5px, 0 13px); }
+#stripe::after  { background:var(--accent); clip-path:polygon(0 13px, 100% 5px, 100% 10px, 0 18px); }
+
+.nav-arrow {
+  position:absolute;
+  top:154px;
+  width:26px; height:26px;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:color-mix(in srgb, var(--dark) 45%, transparent);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:50%;
+  color:rgba(255,255,255,0.9);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  transition:background .2s ease, transform .15s ease;
+}
+.nav-arrow svg { width:13px; height:13px; }
+.nav-arrow:active { transform:scale(0.9); background:color-mix(in srgb, var(--accent) 55%, transparent); }
+#arrow-prev { left:10px; }
+#arrow-next { right:10px; }
+
+#bottom-fixed {
+  position:absolute;
+  left:0; right:0; bottom:0;
+  z-index:5;
+  padding:0 18px 12px;
+}
+
+#dots {
+  display:flex;
+  gap:6px;
+  margin-bottom:9px;
+}
+.dot {
+  width:14px; height:3px;
+  border-radius:2px;
+  background:rgba(255,255,255,0.28);
+  transition:background .3s ease, width .3s ease;
+  padding:6px 0;
+  background-clip:content-box;
+  box-sizing:content-box;
+}
+.dot.active { background-color:var(--accent); width:20px; }  /* background-color, not the shorthand: the shorthand resets background-clip and paints the whole 15px hit area as a square */
+
+#cta {
+  margin-top:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  width:100%;
+  height:42px;
+  background:var(--accent-lt);
+  border-radius:8px;
+  color:var(--cta-ink);
+  font-family:var(--font);
+  font-weight:800;
+  font-size:12.5px;
+  letter-spacing:0.01em;
+  box-shadow:0 8px 20px color-mix(in srgb, var(--accent) 35%, transparent);
+  animation:cta-pulse 1.8s ease-in-out 2.6s 6;
+}
+#cta-arrow { width:13px; height:13px; }
+
+/* Required disclosure line under the CTA: it names what is forward-looking and what is at risk, so it runs to four lines.
+   Set in the body face at 7.8px and near-full strength (the mono at 6.7px it replaced was too small to read). */
+#disclosure {
+  margin-top:8px;
+  font-family:var(--font);
+  font-weight:600;
+  font-size:7.8px;
+  letter-spacing:0;
+  line-height:1.3;
+  text-align:center;
+  text-wrap:balance;
+  color:rgba(255,255,255,0.9);
+}
+@keyframes cta-pulse {
+  0%, 100% { box-shadow:0 8px 20px color-mix(in srgb, var(--accent) 35%, transparent); }
+  50%      { box-shadow:0 8px 26px color-mix(in srgb, var(--accent) 65%, transparent), 0 0 0 5px color-mix(in srgb, var(--accent) 12%, transparent); }
+}
+
+/* ── Entrance sequence (initial load only) ─────────────────────── */
+.reveal {
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity .7s var(--ease), transform .7s var(--ease);
+}
+#banner.is-live .reveal { opacity:1; transform:none; }
+#top-bar[data-delay="0"] { transition-delay:.05s; }
+#bottom-fixed[data-delay="4"] { transition-delay:.55s; }
+
+#click-tag-wrapper { position:absolute; width:0; height:0; overflow:hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  #cta { animation:none; }
+  .tw, .flow { animation:none; }
+  .hbar { transition-duration:.01s; transition-delay:0s; }
+  .reveal { transition-duration:.01s; transition-delay:0s !important; }
+  .slide, .slide-copy { transition-duration:.2s; }
+}
+
+/* ── Motif / Dark ───────────────────────────────────────────────────
+   The IR concept page has no photography beyond one device cutout, so each slide's background
+   is that page's own graphic language redrawn at banner scale (.tmp/motif.py): the scattered
+   powder-particle field, the 100 pg/mL race bars, small active particles on larger carriers,
+   and the dated record with the plan drawn dashed. */
+.slide-bg.motif {
+  animation:none;
+  background-color:var(--dark-2);
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.075) 1px, transparent 1.4px),
+    radial-gradient(62% 34% at 50% 26%, color-mix(in srgb, var(--gold) 26%, transparent), transparent 72%),
+    radial-gradient(46% 30% at 100% 36%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    linear-gradient(to bottom, var(--dark-2) 0, var(--dark) 100%);
+  background-size:14px 14px, auto, auto, auto;
+}
+.motif svg { position:absolute; left:0; top:0; width:300px; height:600px; overflow:hidden; }
+
+/* particles: small actives in the page's coral, light coral and periwinkle; larger pale carriers */
+.pa { fill:var(--accent); }
+.pb { fill:var(--accent-lt); }
+.pc { fill:var(--gold); }
+.pw { fill:#e8eefc; }
+.car { fill:var(--gold-lt); fill-opacity:.18; stroke:var(--gold-lt); stroke-opacity:.5; stroke-width:.6; }
+.tw { animation:twinkle 8s ease-in-out infinite; }
+@keyframes twinkle { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+
+.carrier { fill:var(--gold); fill-opacity:.14; stroke:var(--gold-lt); stroke-opacity:.75; stroke-width:1; }
+.carrier-hi { fill:none; stroke:#fff; stroke-opacity:.38; stroke-width:1.2; stroke-linecap:round; }
+
+/* race bars, drawn to the reported values */
+.hbar.nas { fill:var(--accent); }
+.hbar.epi { fill:var(--gold); }
+.slide .hbar { transform-box:fill-box; transform-origin:0 50%; transform:scaleX(.04); opacity:0; transition:transform 1.2s var(--ease) .35s, opacity .5s ease .35s; }
+.slide.active .hbar { transform:none; opacity:1; }
+.axis { stroke:var(--gold-lt); stroke-opacity:.4; stroke-width:1; }
+
+/* callout leaders */
+.lead { fill:none; stroke:var(--gold-lt); stroke-opacity:.7; stroke-width:.8; }
+.lead.acc { stroke:var(--accent-lt); }
+
+/* dated record: filed events solid with flowing dots, the plan dashed */
+.flow { fill:none; stroke:var(--accent-lt); stroke-width:1.5; stroke-linecap:round; stroke-dasharray:.1 4.2; animation:flow 2.8s linear infinite; }
+@keyframes flow { to { stroke-dashoffset:-16.8; } }
+.plan { fill:none; stroke:var(--gold-lt); stroke-opacity:.7; stroke-width:1.2; stroke-dasharray:4 4; }
+.n-on { fill:var(--accent); stroke:var(--accent-lt); stroke-width:1.2; }
+.n-plan { fill:var(--dark-2); stroke:var(--gold-lt); stroke-width:1.4; stroke-dasharray:3 2.5; }
+
+/* SVG labels: kept in the band above the stat chip (art ends at y 240) */
+.motif text { font-family:var(--mono); fill:var(--accent-lt); }
+.m-title { font-size:7.2px; font-weight:500; letter-spacing:.12em; fill:var(--gold-lt); }
+.m-title.sm { font-size:6.6px; letter-spacing:.1em; fill-opacity:.82; }
+.motif .m-lab { font-family:var(--font); font-size:8.6px; font-weight:700; letter-spacing:.01em; fill:#fff; fill-opacity:.9; }
+.m-lab.on { fill:var(--accent-lt); fill-opacity:1; }
+.motif .m-lab.sm { font-family:var(--mono); font-size:6.6px; font-weight:500; letter-spacing:.1em; }
+.m-lab.plan-t { fill-opacity:.8; }
+.motif .m-bv { font-family:var(--font-head); font-size:14px; font-weight:800; fill:#fff; fill-opacity:.88; }
+.m-bv.on { fill:var(--accent-lt); fill-opacity:1; }
+.m-yr { font-size:7.4px; font-weight:500; letter-spacing:.1em; fill:var(--accent-lt); }
+
+
+/* ══ Concept C: sign-up block, appended to Concept A's stylesheet by
+   scripts/build_concept_c.py. Everything above this line is A's CSS,
+   copied verbatim; don't edit it here — edit A and rebuild. ══ */
+
+/* The sign-up is taller than A's CTA, so the chip and headline move up
+   by --c-lift, and the bottom padding tightens. If A has foreground art
+   in the slide background (a motif, a diagram) that now crowds the chip,
+   lift it too in the C-only block at the end of this file. */
+:root { --c-lift: 16px; --c-error: #ff7a6b; }
+.slide-copy .mid-chip, .slide-copy .copy-bottom { translate: 0 calc(-1 * var(--c-lift)); }
+#bottom-fixed { padding-bottom: 11px; }
+
+#signup { position:relative; margin-top:13px; cursor:default; }
+.sr-only {
+  position:absolute; width:1px; height:1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap;
+}
+#signup-row {
+  position:relative;
+  display:flex;
+  gap:6px;
+  height:40px;
+}
+#signup-email {
+  flex:1;
+  min-width:0;
+  height:100%;
+  padding:0 11px;
+  border:1px solid rgba(255,255,255,0.24);
+  border-radius:3px;
+  outline:0;
+  background:color-mix(in srgb, var(--dark) 55%, transparent);
+  color:var(--white, #fff);
+  font-family:var(--font);
+  font-size:11px;
+  font-weight:500;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+#signup-email::placeholder { color:rgba(255,255,255,0.6); }
+#signup-email:focus {
+  border-color:var(--accent);
+  background:color-mix(in srgb, var(--dark) 75%, transparent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+#signup.is-error #signup-email { border-color:var(--c-error); animation:shake .35s ease; }
+@keyframes shake {
+  0%, 100% { transform:translateX(0); }
+  25% { transform:translateX(-4px); }
+  75% { transform:translateX(4px); }
+}
+/* Same fill, ink and type as A's CTA (--cta-ink), so C reads as A */
+#signup-btn {
+  flex:none;
+  height:100%;
+  padding:0 13px;
+  background:var(--accent);
+  border-radius:3px;
+  color:var(--cta-ink, var(--dark-2));
+  font-family:var(--font-head, var(--font));
+  font-weight:800;
+  font-size:11px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  box-shadow:0 8px 20px color-mix(in srgb, var(--accent) 35%, transparent);
+  transition:filter .2s ease, transform .15s ease;
+  animation:btn-pulse 1.8s ease-in-out 2.6s 6;
+}
+#signup-btn:hover { filter:brightness(1.08); }
+#signup-btn:active { transform:scale(0.96); }
+#signup.is-sending #signup-btn { opacity:0.6; pointer-events:none; }
+@keyframes btn-pulse {
+  0%, 100% { box-shadow:0 8px 20px color-mix(in srgb, var(--accent) 35%, transparent); }
+  50%      { box-shadow:0 8px 26px color-mix(in srgb, var(--accent) 60%, transparent); }
+}
+
+#signup-done {
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  background:var(--accent);
+  border-radius:3px;
+  color:var(--cta-ink, var(--dark-2));
+  font-family:var(--font-head, var(--font));
+  font-weight:700;
+  font-size:11px;
+  opacity:0;
+  transform:scale(0.96);
+  pointer-events:none;
+  transition:opacity .35s var(--ease), transform .35s var(--ease);
+}
+#signup-done svg { width:15px; height:15px; flex:none; }
+#signup.is-done #signup-done { opacity:1; transform:none; }
+#signup.is-done #signup-email, #signup.is-done #signup-btn { visibility:hidden; }
+
+/* Consent and error share one two-line slot, so the error never moves
+   anything; the consent comes back as soon as the viewer types. */
+#signup-consent, #signup-msg {
+  margin-top:7px;
+  height:20px;
+  font-family:var(--font);
+  font-size:7px;
+  line-height:1.42;
+}
+#signup-consent { color:rgba(255,255,255,0.6); }
+#signup-consent a { color:inherit; text-decoration:underline; }
+#signup-msg {
+  display:none;
+  font-size:9px;
+  font-weight:600;
+  color:var(--c-error);
+}
+#signup.is-error #signup-consent { display:none; }
+#signup.is-error #signup-msg { display:block; }
+
+#fls-line {
+  margin-top:4px;
+  font-family:var(--mono);
+  font-size:6.6px;
+  letter-spacing:0.03em;
+  line-height:1.2;
+  text-align:center;
+  color:rgba(255,255,255,0.55);
+  white-space:nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #signup-btn { animation:none; }
+}
+
+/* A's CTA look, copied from its #cta rule by build_concept_c.py */
+#signup-btn {
+  background:var(--accent-lt);
+  color:var(--cta-ink);
+  font-family:var(--font);
+  font-weight:800;
+  letter-spacing:0.01em;
+  border-radius:8px;
+}
+#signup-done {
+  background:var(--accent-lt);
+  color:var(--cta-ink);
+  font-family:var(--font);
+  font-weight:800;
+  border-radius:8px;
+}
+
+/* ══ C-only overrides (kept on rebuild) ══ */
+
+/* The sign-up block (input row, consent, four-line disclosure) is 24px taller than A's CTA block: lift the chip and
+   headline with it (build_concept_c.py reads --c-lift). */
+:root { --c-lift: 24px; }
+/* Slide 1's device ends at y 246 in A; with the chip lifted it would sit under the chip, so lift the art with it. */
+.slide[data-index="0"] .motif svg { translate:0 -12px; }
+/* Consent / error slot: two lines, big enough to read next to the 14px Subscribe label */
+#signup-consent, #signup-msg { height:22px; font-size:7.6px; line-height:1.4; }
+#signup-consent { color:rgba(255,255,255,0.8); }
+/* Four-line disclosure in A's type: Mulish 7.8px at near-full strength, wrapped and widened past the side padding */
+#fls-line { white-space:normal; text-wrap:balance; font-family:var(--font); font-weight:600; font-size:7.8px; letter-spacing:0; line-height:1.3; margin:5px -2px 0; color:rgba(255,255,255,0.9); }

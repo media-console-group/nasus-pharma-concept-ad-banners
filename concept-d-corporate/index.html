@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="UTF-8">
+<meta name="ad.size" content="width=300,height=600">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=300,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Nasus Pharma Ltd. — Investor Relations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!--
+  Nasus Pharma Ltd. — IR display banner, 300x600 — Concept D: Corporate site / brand-native.
+  Promotes: https://nasus-ir-concept.pages.dev/
+  Styled from the company's own CORPORATE website (https://www.nasuspharma.com/), not the IR concept
+  page that Concepts A-C are built from: its white header + logo lockup, navy / coral / periwinkle
+  palette, pill buttons, coral band and pink panel. "Homepage in miniature": each slide is one module
+  of the corporate site:
+    1 homepage hero -> 2 coral three-pillar band -> 3 technology-page split -> 4 "Our Lead Candidate" card.
+  Photos are the site's own, saved locally (assets/); assets/logo.png is the site's own logo file.
+  Every claim comes from the project fact sheet (.tmp/facts.md), never from the site's evergreen copy.
+  Written by .tmp/gen_d.py; style.css is hand-edited.
+-->
+
+<div id="banner" aria-label="Nasus Pharma Ltd. investor relations advertisement">
+
+  <div id="slides">
+
+    <!-- Slide 1 — Overview -->
+    <section class="slide m-hero" data-index="0">
+      <!-- Module: corporate homepage hero (navy ground, powder dust at left, the emergency photo at right,
+           white bold title, white stat copy). Photo is the site's own hero art (nasus_emergency_situation.png).
+           Facts: [20-F] ~7M patients prescribed epinephrine in 2023, ~50% do not carry it (Cantor Fitzgerald /
+           Raymond James, 2024); NS002 investigational, lead candidate for anaphylaxis. -->
+      <img class="d-photo" src="assets/slide-1.jpg" alt="Illustrative image: a woman on the phone kneeling beside a person lying on the floor, with white powder dust at left">
+      <span class="photo-cap">Illustrative image, not clinical use</span>
+      <div class="hero-panel">
+        <h2>Developing Intranasal Powder Medicines for Emergencies</h2>
+        <p class="hero-desc">Nasus Pharma is a clinical-stage company. Its lead candidate, <span class="nw">NS002</span>, is an investigational epinephrine powder for anaphylaxis.</p>
+        <div class="d-stats">
+          <div class="d-stat">
+            <p class="d-value">~7M</p>
+            <p class="d-label">U.S. patients prescribed epinephrine, 2023</p>
+          </div>
+          <div class="d-stat">
+            <p class="d-value">~50%</p>
+            <p class="d-label">of them do not carry it</p>
+          </div>
+        </div>
+        <p class="hero-note">Third-party estimates, as cited in the company&#8217;s 20-F.</p>
+      </div>
+    </section>
+
+    <!-- Slide 2 — Phase 2 -->
+    <section class="slide m-band3" data-index="1">
+      <!-- Module: corporate homepage coral three-pillar band (white bold values between thin white rules),
+           with the site's pink panel (#F2CFCB) carrying the captions in navy, where the small text holds contrast.
+           Facts: [PR-0316] median T100 1.69 vs 3.42 min (p=0.033); 88.4% vs 64.6% by 5 min (p=0.0081);
+           open-label, 50 healthy adults; [20-F] no NS002 study powered for statistical significance. -->
+      <div class="b3-head">
+        <h2>Phase 2: Time to Reach 100&nbsp;pg/mL in Blood</h2>
+        <p>Company-reported, open-label, single-dose study without nasal allergic challenge, 50 healthy adults, announced Mar&nbsp;16, 2026.</p>
+      </div>
+      <div class="b3-band">
+        <div class="b3-col"><p class="b3-val">1.69<small>min</small></p></div>
+        <div class="b3-col"><p class="b3-val">3.42<small>min</small></p></div>
+        <div class="b3-col"><p class="b3-val">88.4<small>%</small></p></div>
+      </div>
+      <div class="b3-caps">
+        <p>NS002 median to 100&nbsp;pg/mL</p>
+        <p>EpiPen&#174; median to 100&nbsp;pg/mL</p>
+        <p>NS002 at 100&nbsp;pg/mL by 5&nbsp;min (EpiPen&#174;: 64.6%)</p>
+      </div>
+      <p class="b3-note">Each participant received both products. By 30&nbsp;min, 95.3% vs 95.8% were at 100&nbsp;pg/mL. Blood levels, not clinical outcomes.</p>
+      <p class="b3-note">The 20-F says no NS002 study was powered for statistical significance, so observed effects may not be real.</p>
+    </section>
+
+    <!-- Slide 3 — Platform -->
+    <section class="slide m-split" data-index="2">
+      <!-- Module: corporate technology-page split ("Powder Over Liquid"): the site's electron micrograph
+           beside a pink panel (#F2CFCB) with navy bold title and coral-ruled bullets, stacked for portrait.
+           Facts: [20-F] Nasax powder = two homogenous particle populations (small active particles, large lactose
+           carriers); Aptar is the sole supplier of the intranasal Unit Dose Spray device. No performance claims. -->
+      <figure class="split-fig">
+        <img class="split-photo" src="assets/slide-3.jpg" alt="Electron micrograph of powder particles: many small spheres among larger irregular particles">
+        <figcaption>Powder micrograph, from nasuspharma.com</figcaption>
+      </figure>
+      <div class="split-card">
+        <h2>Two Particle Populations</h2>
+        <ul class="d-list">
+          <li><b>Nasax powder:</b> small active particles plus large lactose carriers, per the company&#8217;s&nbsp;20-F.</li>
+          <li>Delivered by an Aptar intranasal <span class="nw">unit-dose</span> spray device. Aptar is a single-source supplier (20-F risk).</li>
+        </ul>
+        <p class="split-note">NS002 is investigational and not FDA-approved.</p>
+      </div>
+    </section>
+
+    <!-- Slide 4 — Status -->
+    <section class="slide m-lead" data-index="3">
+      <!-- Module: corporate homepage "Our Lead Candidate": white rounded card, the site's own device-outline
+           icon in periwinkle, navy bold title, over the periwinkle band with the site's powder dust.
+           Facts: [PR-0914] the company announced FDA cleared the NS002 IND (the 424B5 of Sep 18 still says "under FDA
+           review", so the claim is attributed); pivotal study planned in addition, Q4 2026; [PR-0817] "subject to
+           regulatory alignment"; cash $11.9M at Jun 30, ~$10.3M at Aug 17, runway "through the second quarter of 2027"
+           (company); [20-F][6-K] no revenue from continuing operations, going-concern doubt, more funding needed. -->
+      <img class="d-photo" src="assets/slide-4.jpg" alt="">
+      <div class="lead-card">
+        <svg class="lead-icon" viewBox="0 0 46 66" fill="none" aria-hidden="true"><path d="M5.68546 58.1837L10.7635 44.9905L6.90556 43.5056L13.9994 25.0755L12.1719 24.3721L13.3348 21.3507L21.6599 24.5551C23.0474 20.8493 26.0366 12.9421 26.8931 10.9591C27.7496 8.97615 30.1874 5.32777 31.2993 3.75145L35.5633 5.3927C35.4963 6.67738 35.1506 10.1597 34.3045 13.8118C33.4583 17.4638 30.4631 24.3974 29.0713 27.4078L37.5995 30.6903L36.4366 33.7116L34.9137 33.1254L27.8199 51.5556L24.0634 50.1097L18.9853 63.3028L5.68546 58.1837Z" stroke="#7698E7" stroke-linejoin="round" stroke-width="4"/><path d="M7 43L27 51" stroke="#7698E7" stroke-linejoin="round" stroke-width="4"/></svg>
+        <h2>NS002: Epinephrine for Anaphylaxis</h2>
+        <p class="lead-desc">Investigational. The company announced on Sep&nbsp;14, 2026 that FDA cleared the IND. A pivotal study is planned in addition (Q4&nbsp;2026), subject to regulatory alignment.</p>
+        <div class="d-stats">
+          <div class="d-stat">
+            <p class="d-value">$11.9M</p>
+            <p class="d-label">Cash &amp; deposits Jun&nbsp;30 (about $10.3M Aug&nbsp;17)</p>
+          </div>
+          <div class="d-stat">
+            <p class="d-value">Q2 2027</p>
+            <p class="d-label">Cash runway, company estimate</p>
+          </div>
+          <div class="d-stat">
+            <p class="d-value">None</p>
+            <p class="d-label">Revenue from continuing operations</p>
+          </div>
+        </div>
+        <p class="lead-note">Company filings cite substantial <span class="nw">going-concern</span> doubt; more funding is needed.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Persistent chrome — the corporate site's header, never rotates -->
+  <header id="top-bar" class="reveal" data-delay="0">
+    <img id="logo" src="assets/logo.png" alt="Nasus Pharma" width="80" height="45">
+    <span id="ticker">NYSE&nbsp;American:&nbsp;NSRX</span>
+  </header>
+
+  <!-- Slider controls: round navy buttons, like the site's slider controls -->
+  <button type="button" class="nav-arrow" id="arrow-prev" aria-label="Previous slide">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 6 8l4 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button type="button" class="nav-arrow" id="arrow-next" aria-label="Next slide">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l4 5-4 5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <div id="bottom-fixed" class="reveal" data-delay="4">
+    <div id="dots" role="tablist" aria-label="Slide selector">
+      <button class="dot active" data-index="0" aria-label="Slide 1: Overview"></button>
+      <button class="dot" data-index="1" aria-label="Slide 2: Phase 2"></button>
+      <button class="dot" data-index="2" aria-label="Slide 3: Platform"></button>
+      <button class="dot" data-index="3" aria-label="Slide 4: Status"></button>
+    </div>
+
+    <!-- The site's pill button, arrow after the label -->
+    <a href="#" id="cta">
+      <span>Investors Overview</span>
+      <svg id="cta-arrow" viewBox="0 0 24 25" aria-hidden="true"><path d="M12 4.18066L10.585 5.59566L16.17 11.1807H4V13.1807H16.17L10.585 18.7657L12 20.1807L20 12.1807L12 4.18066Z"/></svg>
+    </a>
+
+    <!-- A navy footer strip carrying the required forward-looking-statements line -->
+    <p id="fls">NS002 is investigational, not FDA-approved. Forward-looking: pivotal timing, cash runway. Risks: going-concern doubt, no revenue, more funding needed, dilution (at-the-market program, warrants). See 20-F risk factors.</p>
+  </div>
+
+  <!-- Standard HTML5-ad click-tag plumbing -->
+  <div id="click-tag-wrapper"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
